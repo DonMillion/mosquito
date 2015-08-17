@@ -212,6 +212,21 @@ class DbBase{
 		$this->query($this->sql);
 		return $this->re ? $this->mysqli->affected_rows : $this->re;
 	}
+
+	public function execute($sql, $index=false){
+		$this->query($sql);
+		$result = array();
+		if ($index == false){
+			while ($row = $this->re->fetch_assoc()) {
+				$result[] = $row;
+			}
+		} else {
+			while ($row = $this->re->fetch_assoc()) {
+				$result[$row[$index]] = $row;
+			}
+		}
+		return $result;
+	}
 }
 
 ?>
